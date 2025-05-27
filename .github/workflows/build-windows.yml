@@ -9,7 +9,7 @@ jobs:
       matrix:
           version: ['7.3']
           arch: [x64]
-          ts: [nts, zts]
+          ts: [ts]
           exclude:
             - { version: '8.4', arch: x64, ts: zts }
             - { version: '8.4', arch: x86, ts: nts }
@@ -45,6 +45,6 @@ jobs:
 
       - name: configure
         run: configure --enable-memcached --enable-memcached-session --enable-memcached-json --with-prefix=${{steps.setup-php.outputs.prefix}}
-        
+
       - name: make
         run: nmake
