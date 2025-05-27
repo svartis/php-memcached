@@ -9,7 +9,7 @@ jobs:
       matrix:
           version: ['7.3']
           arch: [x64]
-          ts: [nts]
+          ts: [nts, zts]
           exclude:
             - { version: '8.4', arch: x64, ts: zts }
             - { version: '8.4', arch: x86, ts: nts }
@@ -18,6 +18,7 @@ jobs:
     steps:
       - name: Checkout memcached
         uses: actions/checkout@v4
+
       - name: Setup PHP
         id: setup-php
         uses: php/setup-php-sdk@v0.10
@@ -26,19 +27,24 @@ jobs:
           arch: ${{matrix.arch}}
           ts: ${{matrix.ts}}
           deps: zlib
-          cache: true
+          cache: false
+
       - name: Fetch libmemcached
         run: |
           set MEMCACHED_FILENAME=libmemcached-1.1.4-${{steps.setup-php.outputs.vs == 'vs17' && 'vs16' || steps.setup-php.outputs.vs}}-${{matrix.arch}}.zip
           curl -OLs https://downloads.php.net/~windows/pecl/deps/%MEMCACHED_FILENAME% && 7z x %MEMCACHED_FILENAME% -o..\deps
+
       - name: Enable Developer Command Prompt
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{matrix.arch}}
           toolset: ${{steps.setup-php.outputs.toolset}}
+
       - name: phpize
         run: phpize
+
       - name: configure
         run: configure --enable-memcached --enable-memcached-session --enable-memcached-json --with-prefix=${{steps.setup-php.outputs.prefix}}
+        
       - name: make
         run: nmake
