@@ -7,13 +7,13 @@ jobs:
         shell: cmd
     strategy:
       matrix:
-          version: ['7.3']
-          arch: [x64]
-          ts: [ts]
-          exclude:
-            - { version: '8.4', arch: x64, ts: zts }
-            - { version: '8.4', arch: x86, ts: nts }
-            - { version: '8.4', arch: x86, ts: zts }
+        version: ["7.3"]
+        arch: [x64]
+        ts: [ts]
+        exclude:
+          - { version: "8.4", arch: x64, ts: zts }
+          - { version: "8.4", arch: x86, ts: nts }
+          - { version: "8.4", arch: x86, ts: zts }
     runs-on: windows-latest
     steps:
       - name: Checkout memcached
@@ -22,11 +22,11 @@ jobs:
       - name: Install VC15 component
         shell: pwsh
         run: |
-                Set-Location "C:\Program Files (x86)\Microsoft Visual Studio\Installer\"
-                $installPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-                $component = "Microsoft.VisualStudio.Component.VC.v141.x86.x64"
-                $args = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$installPath`"", '--add', $component, '--quiet', '--norestart', '--nocache')
-                $process = Start-Process -FilePath cmd.exe -ArgumentList $args -Wait -PassThru -WindowStyle Hidden
+          Set-Location "C:\Program Files (x86)\Microsoft Visual Studio\Installer\"
+          $installPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+          $component = "Microsoft.VisualStudio.Component.VC.v141.x86.x64"
+          $args = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$installPath`"", '--add', $component, '--quiet', '--norestart', '--nocache')
+          $process = Start-Process -FilePath cmd.exe -ArgumentList $args -Wait -PassThru -WindowStyle Hidden
 
       - name: Setup PHP
         id: setup-php
@@ -36,12 +36,12 @@ jobs:
           arch: ${{matrix.arch}}
           ts: ${{matrix.ts}}
           deps: zlib
-          cache: false
+          cache: true
 
       - name: Fetch libmemcached
         run: |
           set MEMCACHED_FILENAME=libmemcached-1.1.4-${{steps.setup-php.outputs.vs == 'vs17' && 'vs16' || steps.setup-php.outputs.vs}}-${{matrix.arch}}.zip
-          curl -OLs https://downloads.php.net/~windows/pecl/deps/%MEMCACHED_FILENAME% && 7z x %MEMCACHED_FILENAME% -o..\deps
+          curl -OLs https://downloads.php.net/~windows/pecl/deps/libmemcached-1.1.1-vc15-x64.zip && 7z x %MEMCACHED_FILENAME% -o..\deps
 
       - name: Enable Developer Command Prompt
         uses: ilammy/msvc-dev-cmd@v1
@@ -53,7 +53,7 @@ jobs:
         run: phpize
 
       - name: configure
-        run: configure --enable-memcached --enable-memcached-session --enable-memcached-json --with-prefix=${{steps.setup-php.outputs.prefix}}
+        run: configure --enable-memcached --enable-memcached-session --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary --with-prefix=${{steps.setup-php.outputs.prefix}}
 
       - name: make
         run: nmake
