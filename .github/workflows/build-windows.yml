@@ -63,7 +63,8 @@ jobs:
         run: phpize
 
       - name: configure
-        run: configure --enable-memcached=shared --enable-memcached-session --enable-memcached-json --enable-memcached-igbinary --enable-igbinary=shared --with-prefix=${{steps.setup-php.outputs.prefix}}
+        #run: configure --enable-memcached=shared --enable-memcached-session --enable-memcached-json --enable-memcached-igbinary --enable-igbinary=shared --with-prefix=${{steps.setup-php.outputs.prefix}}
+        run: configure --enable-memcached --enable-memcached-session --enable-memcached-json --with-prefix=${{steps.setup-php.outputs.prefix}}
 
       - name: make
         run: nmake
