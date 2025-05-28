@@ -44,9 +44,10 @@ jobs:
           set MEMCACHED_FILENAME=libmemcached-1.1.1-vc15-x64.zip
           curl -OLs https://downloads.php.net/~windows/pecl/deps/%MEMCACHED_FILENAME% && 7z x %MEMCACHED_FILENAME% -o..\deps
 
-      - name: List
+      - name: Fetch igbinary
         run: |
-          dir
+          set IGBINARY_FILENAME=3.2.16.zip
+          curl -OLs https://github.com/igbinary/igbinary/archive/refs/tags/%IGBINARY_FILENAME% && 7z x %IGBINARY_FILENAME% -o..\deps
 
       - name: Enable Developer Command Prompt
         uses: ilammy/msvc-dev-cmd@v1
