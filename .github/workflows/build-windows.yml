@@ -7,26 +7,27 @@ jobs:
         shell: cmd
     strategy:
       matrix:
+        os: [ windows-2019 ]
         version: ["7.3"]
         arch: [x64]
         ts: [ts]
-        exclude:
-          - { version: "8.4", arch: x64, ts: zts }
-          - { version: "8.4", arch: x86, ts: nts }
-          - { version: "8.4", arch: x86, ts: zts }
+        # exclude:
+        #   - { version: "8.4", arch: x64, ts: zts }
+        #   - { version: "8.4", arch: x86, ts: nts }
+        #   - { version: "8.4", arch: x86, ts: zts }
     runs-on: windows-latest
     steps:
       - name: Checkout memcached
         uses: actions/checkout@v4
 
-      - name: Install VC15 component
-        shell: pwsh
-        run: |
-          Set-Location "C:\Program Files (x86)\Microsoft Visual Studio\Installer\"
-          $installPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-          $component = "Microsoft.VisualStudio.Component.VC.v141.x86.x64"
-          $args = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$installPath`"", '--add', $component, '--quiet', '--norestart', '--nocache')
-          $process = Start-Process -FilePath cmd.exe -ArgumentList $args -Wait -PassThru -WindowStyle Hidden
+      # - name: Install VC15 component
+      #   shell: pwsh
+      #   run: |
+      #     Set-Location "C:\Program Files (x86)\Microsoft Visual Studio\Installer\"
+      #     $installPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+      #     $component = "Microsoft.VisualStudio.Component.VC.v141.x86.x64"
+      #     $args = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$installPath`"", '--add', $component, '--quiet', '--norestart', '--nocache')
+      #     $process = Start-Process -FilePath cmd.exe -ArgumentList $args -Wait -PassThru -WindowStyle Hidden
 
       - name: Setup PHP
         id: setup-php
