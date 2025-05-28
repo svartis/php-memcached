@@ -47,7 +47,7 @@ jobs:
       - name: Copy igbinary folder
         run: |
           if not exist ..\deps\igbinary mkdir ..\deps\igbinary
-          copy /Y .\deps\igbinary\* ..\deps\igbinary
+          copy /Y igbinary\* ..\deps\igbinary
 
       - name: List
         run: |
