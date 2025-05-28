@@ -15,7 +15,7 @@ jobs:
         #   - { version: "8.4", arch: x64, ts: zts }
         #   - { version: "8.4", arch: x86, ts: nts }
         #   - { version: "8.4", arch: x86, ts: zts }
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - name: Checkout memcached
         uses: actions/checkout@v4
