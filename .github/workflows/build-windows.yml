@@ -47,7 +47,11 @@ jobs:
       - name: Fetch igbinary
         run: |
           set IGBINARY_FILENAME=3.2.16.zip
-          curl -OLs https://github.com/igbinary/igbinary/archive/refs/tags/%IGBINARY_FILENAME% && 7z x %IGBINARY_FILENAME% -o..\deps
+          curl -OLs https://github.com/igbinary/igbinary/archive/refs/tags/%IGBINARY_FILENAME% && 7z x %IGBINARY_FILENAME% -o..\deps\
+
+      - name: List
+        run: |
+          dir ..\deps
 
       - name: Enable Developer Command Prompt
         uses: ilammy/msvc-dev-cmd@v1
