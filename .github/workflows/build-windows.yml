@@ -80,7 +80,7 @@ jobs:
           copy %prefix%\* .install
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: igbinary-${{github.ref_name}}-Windows-php-${{matrix.version.php}}-${{matrix.arch}}-${{matrix.ts}}
+          name: ${{github.ref_name}}-Windows-php-${{matrix.version.php}}-${{matrix.arch}}-${{matrix.ts}}
           path: .install
